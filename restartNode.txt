@@ -1,0 +1,24 @@
+///function to restart a node
+def
+ restart(node){
+for
+ (slave 
+in
+ jenkins.model.Jenkins.instance.slaves) {
+if
+ (slave.name.equals(node)){
+def
+ channel = slave.getComputer().getChannel()
+RemotingDiagnostics.executeGroovy( 
+"""
+if (Functions.isWindows()) {
+'shutdown /r /t 10 /c "Restarting after Jenkins test 
+completed"'.execute()
+} else {
+"sudo reboot".execute()
+}
+"""
+, channel)
+}
+}
+}

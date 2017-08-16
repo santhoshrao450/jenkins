@@ -1,0 +1,25 @@
+import net.bull.javamelody.*;
+
+java = new JavaInformations(Parameters.getServletContext(), true);
+memory = java.memoryInformations;
+println "used memory = " + Math.round(memory.usedMemory / 1024 / 1024) + " Mb";
+println "active HTTP threads count = " + java.activeThreadCount;
+println "system load average = " + java.systemLoadAverage;
+
+threads = java.getThreadInformationsList();
+deadlocked = new java.util.ArrayList();
+for (thread in threads) {
+  if (thread.deadlocked)
+    deadlocked.add(thread);
+}
+println deadlocked.size() + " deadlocked threads / " + threads.size() + " threads";
+for (thread in deadlocked) {
+  println "";
+  println thread;
+  for (s in thread.getStackTrace())
+    println "    " + s;
+}
+
+if (java.systemLoadAverage > 50) throw new Exception("Alert for Jenkins: systemLoadAverage is " + java.systemLoadAverage);
+if (java.activeThreadCount > 100) throw new Exception("Alert for Jenkins: activeThreadCount is " + java.activeThreadCount);
+if (deadlocked.size() > 0) throw new Exception("Alert for Jenkins: " + deadlocked.size() + " deadlocked threads");

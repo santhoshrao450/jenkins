@@ -1,0 +1,16 @@
+import net.bull.javamelody.*;
+
+java = new JavaInformations(Parameters.getServletContext(), true);
+threads = java.getThreadInformationsList();
+deadlocked = new java.util.ArrayList();
+for (thread in threads) {
+  if (thread.deadlocked)
+    deadlocked.add(thread);
+}
+println deadlocked.size() + " deadlocked threads / " + threads.size() + " threads (" + java.activeThreadCount + " http threads active)";
+for (thread in deadlocked) {
+  println "";
+  println thread;
+  for (s in thread.getStackTrace())
+    println "    " + s;
+}

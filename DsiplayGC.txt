@@ -1,0 +1,6 @@
+import net.bull.javamelody.*;
+
+before = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+System.gc();
+after = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+println I18N.getFormattedString("ramasse_miette_execute", Math.round((before - after) / 1024));

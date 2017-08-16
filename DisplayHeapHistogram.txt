@@ -1,0 +1,8 @@
+import net.bull.javamelody.*;
+
+classes = VirtualMachine.createHeapHistogram().getHeapHistogram();
+println "class    instances    bytes    source";
+println "=====================================";
+for (c in classes) {
+    println c.name + "    " + c.instancesCount + "    " + c.bytes + "    " + c.source;
+}
